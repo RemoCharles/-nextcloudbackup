@@ -5,7 +5,7 @@ backupDir='media/remo/Backup1/nextcloud'
 
 currentDate=$(date +"%Y%m%d_%H%M%S")
 
-backupFile=${backupDir}/${currentDate}/
+backupFile="${backupDir}/${currentDate}/"
 
 #where the data is stored
 nextcloudDataDir='/usr/share/nginx/nextcloud-data'
@@ -21,6 +21,16 @@ maxNrofBackups=3
 
 #name of backupfile
 backupName='nextcloud-data.tar.gz'
+
+# Function for error messages
+errorecho() { cat <<< "$@" 1>&2; }
+
+# Check for root
+if [ "$(id -u)" != "0" ]
+then
+	errorecho "ERROR: This script has to be run as root!"
+	exit 1
+fi
 
 function DisableMaintenanceMode() {
 	echo "Switching off maintenance mode..."
