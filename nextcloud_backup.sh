@@ -1,14 +1,14 @@
 #!/bin/bash
 
 #Variables
-backupDir='media/remo/Backup1/nextcloud'
+backupDir='/media/remo/Backup1/nextcloud'
 
 currentDate=$(date +"%Y%m%d_%H%M%S")
 
 backupFile="${backupDir}/${currentDate}/"
 
 #where the data is stored
-nextcloudDataDir='/usr/share/nginx/nextcloud-data'
+nextcloudDataDir='/usr/share/nginx/nextcloud/data'
 
 nextcloudFileDir='/usr/share/nginx/nextcloud'
 
@@ -34,25 +34,25 @@ fi
 
 function DisableMaintenanceMode() {
 	echo "Switching off maintenance mode..."
-	sudo -u "${webserverUser}" php7.2 ${nextcloudFileDir}/occ maintenance:mode --off
+	sudo -u "${webServerUser}" php7.2 ${nextcloudFileDir}/occ maintenance:mode --off
 	echo "Done"
 	echo
 }
 
 function MaintenanceMode() {
 	echo "Switching on maintenance mode..."
-	sudo -u "${webserverUser}" php7.2 ${nextcloudFileDir}/occ maintenance:mode --on
+	sudo -u "${webServerUser}" php7.2 ${nextcloudFileDir}/occ maintenance:mode --on
 	echo "Done"
 	echo
 }
 
 #Start
 # Check if backup dir already exists
-if [ ! -d "${backupDir}" ]
+if [ ! -d "${backupFile}" ]
 then
-	mkdir -p "${backupDir}"
+	mkdir -p "${backupFile}"
 else
-	errorecho "ERROR: The backup directory ${backupDir} already exists!"
+	errorecho "ERROR: The backup directory ${backupFile} already exists!"
 	exit 1
 fi
 
@@ -67,7 +67,7 @@ echo
 
 # Backup data directory
 echo "Creating backup of Nextcloud data directory..."
-tar -cpzf "${backupDir}/${backUpFile}"  -C "${nextcloudDataDir}" .
+tar -cpzf "${backupDir}/${backupFile}"  -C "${nextcloudDataDir}" .
 echo "Done"
 echo
 
@@ -81,14 +81,14 @@ echo
 DisableMaintenanceMode
 
 # Delete old backups
-if [ ${maxNrOfBackups} != 0 ]
+if [ ${maxNrofBackups} != 0 ]
 then
-	nrOfBackups=$(ls -l ${backupDir} | grep -c ^d)
+	nrofBackups=$(ls -l ${backupDir} | grep -c ^d)
 
-	if [[ ${nrOfBackups} > ${maxNrOfBackups} ]]
+	if [[ ${nrofBackups} > ${maxNrofBackups} ]]
 	then
 		echo "Removing old backups..."
-		ls -t ${backupDir} | tail -$(( nrOfBackups - maxNrOfBackups )) | while read -r dirToRemove; do
+		ls -t ${backupDir} | tail -$(( nrofBackups - maxNrofBackups )) | while read -r dirToRemove; do
 			echo "${dirToRemove}"
 			rm -r "${backupDir}/${dirToRemove:?}"
 			echo "Done"
