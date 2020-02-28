@@ -1,6 +1,7 @@
 #!/bin/bash
 
 #Variables
+#Backup directory
 backupDir='/media/remo/Backup1/nextcloud'
 
 #date
