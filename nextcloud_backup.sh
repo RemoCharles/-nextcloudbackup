@@ -3,17 +3,22 @@
 #Variables
 backupDir='/media/remo/Backup1/nextcloud'
 
+#date
 currentDate=$(date +"%Y%m%d_%H%M%S")
 
+#name of the backup folder
 backupFile="${backupDir}/${currentDate}/"
 
 #where the data is stored
 nextcloudDataDir='/usr/share/nginx/nextcloud/data'
 
+#where nextcloud is installed
 nextcloudFileDir='/usr/share/nginx/nextcloud'
 
+#local webserver
 webServerServiceName='nginx'
 
+#local webserver user
 webServerUser='www-data'
 
 #max Number of Backups to keep
